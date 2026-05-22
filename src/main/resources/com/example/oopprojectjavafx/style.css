@@ -1,0 +1,16 @@
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: darkblue;
+    -fx-font-weight: bold;
+}
+
+.style-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: green;
+    -fx-font-style: italic;
+}
+.stack-pane {
+    -fx-alignment: center;
+}
+
+
