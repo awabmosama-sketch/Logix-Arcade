@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import static com.almasb.fxgl.app.GameApplication.launch;
+
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
@@ -20,3 +22,5 @@ public class HelloApplication extends Application {
         stage.show();
     }
 }
+
+
