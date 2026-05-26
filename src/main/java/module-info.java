@@ -23,4 +23,5 @@ module com.example.oopprojectjavafx {
     exports com.example.oopprojectjavafx;
     exports com.example.oopprojectjavafx.chess;
     exports com.example.oopprojectjavafx.FlappyBird;
+    exports com.example.oopprojectjavafx.HangMan to javafx.graphics;
 }
