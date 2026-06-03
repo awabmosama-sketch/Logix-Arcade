@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<AnchorPane fx:id="gamePane" prefHeight="400.0" prefWidth="600.0"
+<AnchorPane fx:id="gamePane"
             style="-fx-background-color: lightblue;"
-            xmlns="http://javafx.com/javafx/26"
+            xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.oopprojectjavafx.FlappyBird.BirdController">
-   <ImageView fx:id="bird" fitHeight="34.0" fitWidth="40.0" layoutX="281.0" layoutY="10.0" pickOnBounds="true"
-              preserveRatio="true">
-      <image>
-         <Image url="@images/Bird2.png"/>
-      </image>
-   </ImageView>
-   <Rectangle fx:id="plane" height="50.0" width="600.0" layoutY="350.0" fill="GREEN"/>
-   <Label fx:id="scoreLabel" text="Score: 0" layoutX="20.0" layoutY="20.0"/>
-   <Label fx:id="startLabel" text="Press SPACE to Start" layoutX="230.0" layoutY="180.0"/>
+            fx:controller="com.example.oopprojectjavafx.FlappyBird.BirdController"
+            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 </AnchorPane>
