@@ -8,6 +8,7 @@ module com.example.oopprojectjavafx {
     exports com.example.oopprojectjavafx.HangMan;
     exports com.example.oopprojectjavafx.FlappyBird;
     exports com.example.oopprojectjavafx.TicTacToe;
+    exports com.example.oopprojectjavafx.MainMenu;
 
     // Also open them for FXML (if needed)
     opens com.example.oopprojectjavafx.HangMan to javafx.fxml;
