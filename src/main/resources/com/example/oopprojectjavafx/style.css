@@ -12,5 +12,52 @@
 .stack-pane {
     -fx-alignment: center;
 }
+.background-image {
+    -fx-background-image: url("/images/bg.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+/* ==========================================
+   GLOBAL BACKGROUNDS & LABELS
+   ========================================== */
 
+.root {
+    /* Evaluates to: com/example/oopprojectjavafx/images/quiz_background.jpg */
+    -fx-background-image: url("images/quiz_background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
 
+/* Base override for labels to ensure they are visible against custom backgrounds */
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: darkblue;
+    -fx-font-weight: bold;
+}
+
+.style-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: green;
+    -fx-font-style: italic;
+}
+
+/* ==========================================
+   BUTTON SPECIFICITY OVERRIDES (The Magic Fix)
+   ========================================== */
+
+/* Prepending '.button' is strictly required to force JavaFX to drop
+   its default gray Modena theme when these classes are added dynamically */
+.button.correct {
+    -fx-background-color: #00FF00 !important; /* Pure Lime Green */
+    -fx-text-fill: black !important;
+}
+
+.button.wrong {
+    -fx-background-color: #ff6666 !important; /* Soft Red */
+    -fx-text-fill: white !important;
+}

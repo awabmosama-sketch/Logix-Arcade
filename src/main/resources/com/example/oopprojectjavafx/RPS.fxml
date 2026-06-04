@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="591.0" prefWidth="801.0" style="-fx-background-image: src/main/resources/com/example/oopprojectjavafx/RockPaperScisscors/imagsrc/main/resources/com/example/oopprojectjavafx/RockPaperScisscors/images/bg.pnges/bg.png; -fx-background-size: cover; -fx-background-color: rgba(0,0,0,0.5);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oopprojectjavafx.RockPaperScisscors.Controller">
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="135.0" prefWidth="200.0" spacing="100.0" style="-fx-background-color: rgba(0,0,0,0.5);" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="rockButton" alignment="CENTER" mnemonicParsing="false" onAction="#playerturn" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: rgba(0,0,0,0);">
+                            <graphic>
+                                <ImageView fitHeight="90.0" fitWidth="108.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@images/rock.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label text="Rock" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="paperButton" alignment="CENTER" mnemonicParsing="false" onAction="#playerturn" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: rgba(0,0,0,0);">
+                            <graphic>
+                                <ImageView fitHeight="90.0" fitWidth="108.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@images/paper.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label text="Paper" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="scissorsButton" alignment="CENTER" mnemonicParsing="false" onAction="#playerturn" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: rgba(0,0,0,0);">
+                            <graphic>
+                                <ImageView fitHeight="90.0" fitWidth="108.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@images/scissors.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label text="Scissors" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </bottom>
+    <top>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="13.0" style="-fx-background-color: rgba(0,0,0,0.5);" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER_RIGHT" prefHeight="53.0" prefWidth="216.0" text="Player" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Label>
+                <Label fx:id="playerScore" alignment="CENTER" text="0" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" text="-" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Label>
+                <Label fx:id="computerScore" alignment="CENTER" text="0" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Label>
+                <Label lineSpacing="20.0" prefHeight="53.0" prefWidth="215.0" text="Computer" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="player" fitHeight="299.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" />
+                <Label fx:id="result" alignment="CENTER" prefHeight="100.0" prefWidth="277.0" textFill="#fff6f6">
+                    <font>
+                        <Font name="System Bold" size="48.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="computer" fitHeight="299.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" />
+            </children>
+        </HBox>
+    </center>
+   <styleClass>
+      <String fx:value="background-image" />
+      <String fx:value="background-image" />
+   </styleClass>
+</BorderPane>

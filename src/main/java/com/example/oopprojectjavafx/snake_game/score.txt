@@ -1,0 +1,5 @@
+Murtaza: 12
+Mustafa: 17
+Awab:20
+Shazil: 32
+Hassan:1

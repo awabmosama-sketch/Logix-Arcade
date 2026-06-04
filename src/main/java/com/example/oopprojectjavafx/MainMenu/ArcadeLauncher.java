@@ -2,7 +2,10 @@ package com.example.oopprojectjavafx.MainMenu;
 
 import com.example.oopprojectjavafx.FlappyBird.Game;
 import com.example.oopprojectjavafx.HangMan.HangGame;
+import com.example.oopprojectjavafx.QuizGame.QuizGame;
+import com.example.oopprojectjavafx.RockPaperScisscors.GameRPS;
 import com.example.oopprojectjavafx.TicTacToe.TicTacToe;
+import com.example.oopprojectjavafx.snake_game.SnakeGame;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -45,19 +48,18 @@ public class ArcadeLauncher extends Application {
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setTitle("Logix Arcade");
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
     private void showGameSelection() {
-        // Close the main menu (optional) or keep it in background
-        // We'll open a new window for game selection
         gameSelectionStage = new Stage();
         gameSelectionStage.setTitle("Choose a Game");
         Image icon = new Image(getClass().getResource("/com/example/oopprojectjavafx/images/LArLogo.jpeg").toExternalForm());
         gameSelectionStage.getIcons().add(icon);
 
         Label instruction = new Label("Select a game to play:");
-        instruction.setStyle("-fx-font-size: 24; -fx-padding: 20;");
+        instruction.setStyle("-fx-font-size: 24; -fx-padding: 20; -fx-text-fill: white;");
 
         Button hangmanBtn = new Button("Hangman");
         hangmanBtn.setPrefSize(200, 50);
@@ -67,24 +69,40 @@ public class ArcadeLauncher extends Application {
         Button flappyBtn = new Button("Flappy Bird");
         flappyBtn.setPrefSize(200, 50);
         flappyBtn.setStyle("-fx-font-size: 18;");
-        flappyBtn.setOnAction(e -> launchGame(new Game()));  // Game is the FlappyBird main class
+        flappyBtn.setOnAction(e -> launchGame(new Game()));
 
         Button tictactoeBtn = new Button("Tic Tac Toe");
         tictactoeBtn.setPrefSize(200, 50);
         tictactoeBtn.setStyle("-fx-font-size: 18;");
         tictactoeBtn.setOnAction(e -> launchGame(new TicTacToe()));
 
+        Button rockpaperscisscorsBtn = new Button("Rock Paper Scissors");
+        rockpaperscisscorsBtn.setPrefSize(200, 50);
+        rockpaperscisscorsBtn.setStyle("-fx-font-size: 18;");
+        rockpaperscisscorsBtn.setOnAction(e -> launchGame(new GameRPS()));
+
+        Button quizBtsBtn = new Button("Quiz Game");
+        quizBtsBtn.setPrefSize(200, 50);
+        quizBtsBtn.setStyle("-fx-font-size: 18;");
+        quizBtsBtn.setOnAction(e -> launchGame(new QuizGame()));
+
+        Button snakeBtn = new Button("Snake Game");
+        snakeBtn.setPrefSize(200, 50);
+        snakeBtn.setStyle("-fx-font-size: 18;");
+        snakeBtn.setOnAction(e -> launchGame(new SnakeGame()));
+
         Button backBtn = new Button("Back to Main Menu");
         backBtn.setPrefSize(200, 50);
         backBtn.setStyle("-fx-font-size: 18;");
         backBtn.setOnAction(e -> gameSelectionStage.close());
 
-        VBox selectionBox = new VBox(20, instruction, hangmanBtn, flappyBtn, tictactoeBtn, backBtn);
+        VBox selectionBox = new VBox(20, instruction, hangmanBtn, flappyBtn, tictactoeBtn,quizBtsBtn, rockpaperscisscorsBtn,snakeBtn,backBtn);
         selectionBox.setAlignment(Pos.CENTER);
         selectionBox.setStyle("-fx-background-color: #34495e; -fx-padding: 40;");
 
         Scene scene = new Scene(selectionBox, 400, 400);
         gameSelectionStage.setScene(scene);
+        gameSelectionStage.setFullScreen(true);
         gameSelectionStage.show();
     }
 

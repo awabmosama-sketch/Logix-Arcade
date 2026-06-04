@@ -1,0 +1,4 @@
+Murtaza: -12
+Murtaza: -10
+Awab:+6
+Shazil: -32
