@@ -1,35 +1,10 @@
-.title-label {
-    -fx-font-size: 24px;
-    -fx-text-fill: darkblue;
-    -fx-font-weight: bold;
-}
-
-.style-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: green;
-    -fx-font-style: italic;
-}
-.stack-pane {
-    -fx-alignment: center;
-}
-.background-image {
-    -fx-background-image: url("/images/bg.png");
-    -fx-background-size: cover;
-    -fx-background-position: center;
-}
 /* ==========================================
-   GLOBAL BACKGROUNDS & LABELS
+   GLOBAL LABELS & PANE STYLES
    ========================================== */
-
 .root {
-    /* Evaluates to: com/example/oopprojectjavafx/images/quiz_background.jpg */
-    -fx-background-image: url("images/quiz_background.jpg");
-    -fx-background-size: cover;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center center;
+    /* Kept clean to prevent global overriding */
 }
 
-/* Base override for labels to ensure they are visible against custom backgrounds */
 .label {
     -fx-text-fill: #ffffff;
 }
@@ -46,18 +21,39 @@
     -fx-font-style: italic;
 }
 
+.stack-pane {
+    -fx-alignment: center;
+}
+
 /* ==========================================
-   BUTTON SPECIFICITY OVERRIDES (The Magic Fix)
+   SPECIFIC GAME BACKGROUNDS (Absolute Paths)
    ========================================== */
 
-/* Prepending '.button' is strictly required to force JavaFX to drop
-   its default gray Modena theme when these classes are added dynamically */
+.quiz-background {
+    -fx-background-color: #34495e;
+    -fx-background-image: url("/com/example/oopprojectjavafx/images/quiz_background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.rps-background {
+    -fx-background-color: #2c3e50;
+    -fx-background-image: url("/com/example/oopprojectjavafx/images/bg.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+/* ==========================================
+   BUTTON SPECIFICITY OVERRIDES
+   ========================================== */
 .button.correct {
-    -fx-background-color: #00FF00 !important; /* Pure Lime Green */
+    -fx-background-color: #00FF00 !important;
     -fx-text-fill: black !important;
 }
 
 .button.wrong {
-    -fx-background-color: #ff6666 !important; /* Soft Red */
+    -fx-background-color: #ff6666 !important;
     -fx-text-fill: white !important;
 }

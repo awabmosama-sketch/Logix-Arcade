@@ -1,9 +1,13 @@
 package com.example.oopprojectjavafx.QuizGame;
 
+import java.io.*;
+import java.util.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.Region;
 
 public class QuizController {
     @FXML private Label questionLabel;
@@ -13,73 +17,95 @@ public class QuizController {
     @FXML private Button D;
     @FXML private Label scoreLabel;
 
-    String[] questions = {
-            "When was the first telephone invented?",
-            "Who is the founder of the computer?",
-            "What was Java originally called?",
-            "What is the only organ in the human body capable of completely regenerating itself?",
-            "What is the only type of bird capable of flying backward?",
-            "What is the name of the largest moon in our solar system?",
-            "Which type of memory is volatile and loses its data when the computer is powered off?",
-            "Which of the following is the largest ocean on Earth?",
-            "What is the product of 15 and 12?",
-            "Solve for x in the equation: 2x + 5 = 15",
-            "What is the primary purpose of a Compiler?",
-            "If you have a sequence 2, 4, 8, 16, ..., what is the next number?",
-            "What is the standard format for representing colors on the web?",
-            "Which country is known as the \"Land of the Rising Sun\"?",
-            "How many continents are there on Earth?",
-            "What is the capital city of France?",
-            "How many bones are there in an adult human body?",
-            "What does the \"IP\" in IP address stand for?",
-            "What is the result of 15 x 4 + 10?",
-            "Which logic gate outputs '1' only if both inputs are '1'?"
-    };
-
-    String[][] options = {
-            {"1865", "1876", "1893", "1901"},
-            {"Alan Turing", "Charles Babbage", "John von Neumann", "Ada Lovelace"},
-            {"Oak", "Green", "Lattee", "C++"},
-            {"The Lungs", "The Heart", "The Kidneys", "The Liver"},
-            {"Hummingbird", "Peregrine Falcon", "Eagles", "Parrot"},
-            {"Titan", "Europa", "Ganymede", "Triton"},
-            {"ROM", "HDD", "RAM", "SSD"},
-            {"Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"},
-            {"150", "160", "180", "190"},
-            {"2", "5", "7", "10"},
-            {"Execute Code", "Debug Code", "Translate Code", "Store Code"},
-            {"20", "24", "32", "64"},
-            {"Hex Code", "Decimal", "Integer", "Boolean"},
-            {"China", "Thailand", "Japan", "South Korea"},
-            {"5", "6", "7", "8"},
-            {"Berlin", "Madrid", "Paris", "Rome"},
-            {"186", "206", "256", "306"},
-            {"Internal Protocol", "Internet Protocol", "Input Port", "Integrated Program"},
-            {"50", "60", "70", "80"},
-            {"OR", "AND", "NOT", "XOR"}
-    };
-
-    char[] answers = {'B', 'B', 'A', 'D', 'A', 'C', 'C', 'D', 'C', 'B', 'C', 'C', 'A', 'C', 'C', 'C', 'B', 'B', 'C', 'B'};
-
-    int index = 0;
-    int correct_guess = 0;
-    int total_questions = questions.length;
+    private MultipleChoiceQuestion[] quizData;
+    private int index = 0;
+    private int correct_guess = 0;
+    private int total_questions;
 
     @FXML
     public void initialize() {
+        // 1. Core quiz data loading routines
+        loadQuestionsFromFile();
         nextQuestion();
+
+        // 2. ZERO-EFFORT BACKGROUND MOUNTER
+        // Delays execution for a millisecond to let JavaFX build the frame,
+        // then grabs the layout and forces the background image to resolve cleanly.
+        Platform.runLater(() -> {
+            try {
+                if (questionLabel != null && questionLabel.getScene() != null) {
+                    javafx.scene.Parent mainLayout = questionLabel.getScene().getRoot();
+
+                    if (mainLayout instanceof Region) {
+                        Region windowBackground = (Region) mainLayout;
+                        java.net.URL bgUrl = null;
+
+                        // Thoroughly scan all localized package directories for your asset
+                        bgUrl = getClass().getResource("../images/quiz_background.jpg");
+                        if (bgUrl == null) bgUrl = getClass().getResource("images/quiz_background.jpg");
+                        if (bgUrl == null) bgUrl = getClass().getResource("/com/example/oopprojectjavafx/images/quiz_background.jpg");
+
+                        if (bgUrl != null) {
+                            windowBackground.setStyle(
+                                    "-fx-background-image: url('" + bgUrl.toExternalForm() + "'); " +
+                                            "-fx-background-size: cover; " +
+                                            "-fx-background-repeat: no-repeat; " +
+                                            "-fx-background-position: center center; " +
+                                            "-fx-background-color: rgba(0, 0, 0, 0.45);" // Subtle tint overlay to pop your white text
+                            );
+                        } else {
+                            // High-contrast deep slate blue fallback color in case asset paths get decoupled
+                            windowBackground.setStyle("-fx-background-color: #34495e;");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Quiz background routine encounter: " + e.getMessage());
+            }
+        });
+    }
+
+    private void loadQuestionsFromFile() {
+        List<MultipleChoiceQuestion> temporaryList = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader (getClass().getResourceAsStream ("/com/example/oopprojectjavafx/questions.txt"))))
+        {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+
+                // Splits records cleanly using the pipe delimiter
+                String[] parts = line.split("\\|");
+                if (parts.length == 6)
+                {
+                    String questionText = parts[0];
+                    String[] options = {parts[1], parts[2], parts[3], parts[4]};
+                    String answer = parts[5];
+                    temporaryList.add(new MultipleChoiceQuestion(questionText, options, answer));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Critical Error loading questions file: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        quizData = temporaryList.toArray(new MultipleChoiceQuestion[0]);
+        total_questions = quizData.length;
     }
 
     public void nextQuestion() {
-        if (index >= total_questions){
+        if (index >= total_questions) {
             results();
-        }
-        else{
-            questionLabel.setText(questions[index]);
-            A.setText(options[index][0]);
-            B.setText(options[index][1]);
-            C.setText(options[index][2]);
-            D.setText(options[index][3]);
+        } else {
+            MultipleChoiceQuestion currentQ = quizData[index];
+
+            questionLabel.setText(currentQ.getText());
+            A.setText(currentQ.getOptions()[0]);
+            B.setText(currentQ.getOptions()[1]);
+            C.setText(currentQ.getOptions()[2]);
+            D.setText(currentQ.getOptions()[3]);
             scoreLabel.setText(String.valueOf(correct_guess));
         }
     }
@@ -101,8 +127,7 @@ public class QuizController {
             playerGuess = "D";
         }
 
-        String correctAnswer = String.valueOf(answers[index]);
-        if(playerGuess.equals(correctAnswer)){
+        if(quizData[index].checkAnswer(playerGuess)){
             correct_guess++;
             scoreLabel.setText(String.valueOf(correct_guess));
         }
@@ -114,7 +139,8 @@ public class QuizController {
         B.setDisable(true);
         C.setDisable(true);
         D.setDisable(true);
-        String correctAnswer = String.valueOf(answers[index]);
+
+        String correctAnswer = quizData[index].getCorrectAnswer();
 
         if (correctAnswer.equals("A")){
             A.getStyleClass().add("correct");
@@ -166,7 +192,6 @@ public class QuizController {
             }
         });
         pause.play();
-
     }
 
     public void results() {

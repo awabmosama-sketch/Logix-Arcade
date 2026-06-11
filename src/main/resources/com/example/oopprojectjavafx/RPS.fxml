@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="591.0" prefWidth="801.0" style="-fx-background-image: src/main/resources/com/example/oopprojectjavafx/RockPaperScisscors/imagsrc/main/resources/com/example/oopprojectjavafx/RockPaperScisscors/images/bg.pnges/bg.png; -fx-background-size: cover; -fx-background-color: rgba(0,0,0,0.5);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oopprojectjavafx.RockPaperScisscors.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="591.0" prefWidth="801.0"
+            style="-fx-background-image: url('@images/bg.png'); -fx-background-size: cover; -fx-background-repeat: no-repeat; -fx-background-position: center center; -fx-background-color: rgba(0,0,0,0.5);"
+            stylesheets="/com/example/oopprojectjavafx/style.css"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.oopprojectjavafx.RockPaperScisscors.Controller">
     <bottom>
         <HBox alignment="CENTER" prefHeight="135.0" prefWidth="200.0" spacing="100.0" style="-fx-background-color: rgba(0,0,0,0.5);" BorderPane.alignment="CENTER">
             <children>
@@ -105,8 +109,4 @@
             </children>
         </HBox>
     </center>
-   <styleClass>
-      <String fx:value="background-image" />
-      <String fx:value="background-image" />
-   </styleClass>
 </BorderPane>

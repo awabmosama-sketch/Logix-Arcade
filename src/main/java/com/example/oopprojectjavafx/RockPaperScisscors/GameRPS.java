@@ -17,7 +17,7 @@ public class GameRPS extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(GameRPS.class.getResource("/com/example/oopprojectjavafx/RPS.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("StonePaperScissors");
+        stage.setTitle("RockPaperScissors");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/com/example/oopprojectjavafx/images/RPSLogo.jpg")).toExternalForm()));
         stage.setMaximized(true);
         stage.setScene(scene);

@@ -3,165 +3,152 @@ package com.example.oopprojectjavafx.RockPaperScisscors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import java.net.URL;
+import javafx.scene.layout.Region; // Matches any layout type (BorderPane, AnchorPane, etc.)
 
 public class Controller {
-
-    private static final String PAPER = "paper";
-    private static final String ROCK = "rock";
-    private static final String SCISSORS = "scissors";
-    private Image image;
-
     @FXML private ImageView computer;
     @FXML private Label computerScore;
-    @FXML private Button paperButton;
-    @FXML private ImageView player;
     @FXML private Label playerScore;
     @FXML private Label result;
-    @FXML private Button rockButton;
-    @FXML private Button scissorsButton;
+    @FXML private ImageView player;
+
+    private Player humanPlayer = new HumanPlayer();
+    private Player aiPlayer = new ComputerPlayer();
 
     @FXML
     public void initialize() {
-        // Run later ensures the scene is fully attached to the window before we query it
+        // 1. Reset text and clear out hand icons cleanly
+        if (player != null) player.setImage(null);
+        if (computer != null) computer.setImage(null);
+
+        // 2. AUTOMATIC BACKGROUND FINDER (No FXML IDs required!)
+        // This waits a fraction of a millisecond for the window to pop up,
+        // then grabs the outermost layout window automatically.
         Platform.runLater(() -> {
             try {
-                if (result.getScene() != null && result.getScene().getRoot() instanceof BorderPane) {
-                    BorderPane root = (BorderPane) result.getScene().getRoot();
+                if (player != null && player.getScene() != null) {
+                    Parent mainLayout = player.getScene().getRoot();
 
-                    // Correct way to load resources from Maven/Gradle structures
-                    URL bgUrl = getClass().getResource("/com/example/oopprojectjavafx/images/bg.png");
+                    if (mainLayout instanceof Region) {
+                        Region windowBackground = (Region) mainLayout;
+                        java.net.URL bgUrl = null;
 
-                    if (bgUrl != null) {
-                        String bgPath = bgUrl.toExternalForm();
-                        root.setStyle("-fx-background-image: url('" + bgPath + "'); " +
-                                "-fx-background-size: cover; " +
-                                "-fx-background-position: center; " +
-                                "-fx-background-color: rgba(0,0,0,0.5);");
-                        System.out.println("Background loaded successfully");
-                    } else {
-                        System.out.println("Background image not found. Using fallback.");
-                        root.setStyle("-fx-background-color: green;");
+                        // Try locating the image using every possible path variation
+                        bgUrl = getClass().getResource("images/bg.png");
+                        if (bgUrl == null) bgUrl = getClass().getResource("images/bg-image.png");
+                        if (bgUrl == null) bgUrl = getClass().getResource("/com/example/oopprojectjavafx/images/bg.png");
+                        if (bgUrl == null) bgUrl = getClass().getResource("/com/example/oopprojectjavafx/images/bg-image.png");
+
+                        if (bgUrl != null) {
+                            windowBackground.setStyle(
+                                    "-fx-background-image: url('" + bgUrl.toExternalForm() + "'); " +
+                                            "-fx-background-size: cover; " +
+                                            "-fx-background-repeat: no-repeat; " +
+                                            "-fx-background-position: center center; " +
+                                            "-fx-background-color: rgba(0, 0, 0, 0.5);" // 50% dark overlay tint
+                            );
+                        } else {
+                            // Safe fallback: clear dark gray-blue background if files are missing
+                            windowBackground.setStyle("-fx-background-color: #2c3e50;");
+                        }
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Could not load background: " + e.getMessage());
-                e.printStackTrace();
+                System.err.println("Background configuration failed safely: " + e.getMessage());
             }
         });
     }
 
     @FXML
     private void playerturn(ActionEvent event) {
-        String playerChoice = null;
         String buttonId = ((Button) event.getSource()).getId();
 
+        String playerChoice = humanPlayer.makeChoice(buttonId);
+        String computerChoice = aiPlayer.makeChoice(null);
+
+        updateImage(player, playerChoice);
+        updateImage(computer, computerChoice);
+
+        winner(playerChoice, computerChoice);
+    }
+
+    private void updateImage(ImageView view, String choice) {
+        if (view == null) return;
+
         try {
-            switch (buttonId) {
-                case "paperButton":
-                    image = new Image(getClass().getResource("/com/example/oopprojectjavafx/images/paper.png").toExternalForm());
-                    playerChoice = PAPER;
-                    break;
-                case "rockButton":
-                    image = new Image(getClass().getResource("/com/example/oopprojectjavafx/images/rock.png").toExternalForm());
-                    playerChoice = ROCK;
-                    break;
-                case "scissorsButton":
-                    image = new Image(getClass().getResource("/com/example/oopprojectjavafx/images/scissors.png").toExternalForm());
-                    playerChoice = SCISSORS;
-                    break;
+            if (choice != null) {
+                choice = choice.toLowerCase().trim();
+            } else {
+                choice = "";
             }
 
-            if (player != null && image != null) {
-                player.setImage(image);
-                player.setFitWidth(220);
-                player.setFitHeight(299);
-                player.setPreserveRatio(true);
-            }
+            // Explicitly only load actual valid move graphics into hand boxes
+            if (choice.equals("rock") || choice.equals("paper") || choice.equals("scissors")) {
+                String path = "/com/example/oopprojectjavafx/images/" + choice + ".png";
+                java.net.URL imageUrl = getClass().getResource(path);
 
+                if (imageUrl != null) {
+                    view.setImage(new Image(imageUrl.toExternalForm()));
+                } else {
+                    view.setImage(null);
+                }
+            } else {
+                view.setImage(null);
+            }
         } catch (Exception e) {
-            System.out.println("Error loading player image: " + e.getMessage());
             e.printStackTrace();
         }
-        winner(playerChoice, computerTurn());
     }
 
-    @FXML
-    private String computerTurn() {
-        String computerChoice = null;
-        int index = (int) (Math.random() * 3);
-        String resourcePath = "";
-
-        switch (index) {
-            case 0:
-                resourcePath = "/com/example/oopprojectjavafx/images/rock.png";
-                computerChoice = ROCK;
-                break;
-            case 1:
-                resourcePath = "/com/example/oopprojectjavafx/images/paper.png";
-                computerChoice = PAPER;
-                break;
-            case 2:
-                resourcePath = "/com/example/oopprojectjavafx/images/scissors.png";
-                computerChoice = SCISSORS;
-                break;
-        }
-
-        try {
-            URL imgUrl = getClass().getResource(resourcePath);
-            if (imgUrl != null) {
-                computer.setImage(new Image(imgUrl.toExternalForm()));
-                computer.setFitWidth(220);
-                computer.setFitHeight(299);
-                computer.setPreserveRatio(true);
-            }
-        } catch (Exception e) {
-            System.out.println("Error loading computer image: " + e.getMessage());
-        }
-        return computerChoice;
-    }
-
-    public void playerWin(){
+    public void playerWin() {
         result.setText("You Win");
-        playerScore.setText(String.valueOf(Integer.parseInt(playerScore.getText()) + 1));
+        humanPlayer.incrementScore();
+        playerScore.setText(String.valueOf(humanPlayer.getScore()));
     }
 
-    public void computerWin(){
+    public void computerWin() {
         result.setText("You Lose");
-        computerScore.setText(String.valueOf(Integer.parseInt(computerScore.getText()) + 1));
+        aiPlayer.incrementScore();
+        computerScore.setText(String.valueOf(aiPlayer.getScore()));
     }
 
     public void draw(){
         result.setText("Draw");
     }
 
-    private void winner(String playerChoice, String computerChoice){
-        if(playerChoice == null || computerChoice == null) return;
-        if(playerChoice.equals(computerChoice)){
+    private void winner(String playerChoice, String computerChoice) {
+        if (playerChoice == null || computerChoice == null) return;
+
+        if (playerChoice.equals(computerChoice)) {
             draw();
             return;
         }
-        if (playerChoice.equals(ROCK)){
-            if(computerChoice.equals(PAPER)){
-                computerWin();
-            } else if(computerChoice.equals(SCISSORS)){
-                playerWin();
-            }
-        } else if(playerChoice.equals(PAPER)){
-            if(computerChoice.equals(ROCK)){
-                playerWin();
-            } else if(computerChoice.equals(SCISSORS)){
+        if (playerChoice.equals("rock")) {
+            if (computerChoice.equals("paper")){
                 computerWin();
             }
-        } else { // SCISSORS
-            if(computerChoice.equals(ROCK)){
+            else if (computerChoice.equals("scissors")) {
+                playerWin();
+            }
+        }
+        else if (playerChoice.equals("paper")) {
+            if (computerChoice.equals("rock")) {
+                playerWin();
+            }
+            else if (computerChoice.equals("scissors")) {
                 computerWin();
-            } else if(computerChoice.equals(PAPER)){
+            }
+        }
+        else if (playerChoice.equals("scissors")) {
+            if (computerChoice.equals("rock")) {
+                computerWin();
+            }
+            else if (computerChoice.equals("paper")) {
                 playerWin();
             }
         }
